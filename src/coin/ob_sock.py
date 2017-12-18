@@ -30,6 +30,9 @@ while(True):
     b_i = np.where(b_x > (price - window))
     b_x = b_x[b_i]
     b_y = b_y[b_i]
+    if b_x.shape[0] == 0:
+        plt.pause(0.1)
+        continue
     bcum = np.cumsum(b_y[::-1])[::-1]
 
     a_x = asks[:,0]
@@ -37,11 +40,17 @@ while(True):
     a_i = np.where(a_x < (price + window))
     a_x = a_x[a_i]
     a_y = a_y[a_i]
+    if a_x.shape[0] == 0:
+        plt.pause(0.1)
+        continue
     acum = np.cumsum(a_y)
+
+    print(b_x.shape)
+    print(a_x.shape)
 
     plt.clf()
     plt.plot(b_x, bcum, a_x, acum, ls='steps')
-    plt.pause(0.01)
+    plt.pause(0.001)
 
 
 order_book.close()
