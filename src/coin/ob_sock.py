@@ -1,38 +1,47 @@
 import gdax, time
 
 import numpy as np
-import matplotlib as plt
-# class myWebsocketClient(gdax.WebsocketClient):
-#     def on_open(self):
-#         self.url = "wss://ws-feed.gdax.com/"
-#         self.products = ["LTC-USD"]
-#         self.message_count = 0
-#         print("Lets count the messages!")
-#     def on_message(self, msg):
-#         self.message_count += 1
-#         print(msg)
-#         # if 'price' in msg and 'type' in msg:
-#         #     print ("Message type:", msg["type"],
-#         #            "\t@ {:.3f}".format(float(msg["price"])))
-#     def on_close(self):
-#         print("-- Goodbye! --")
-#
-# wsClient = myWebsocketClient()
-# wsClient.start()
-# print(wsClient.url, wsClient.products)
-# while (wsClient.message_count < 10):
-#     print ("\nmessage_count =", "{} \n".format(wsClient.message_count))
-#     time.sleep(1)
-# wsClient.close()
+import matplotlib.pyplot as plt
+
+plt.ion()
+
+window = 100
 
 order_book = gdax.OrderBook(product_id='BTC-USD')
 order_book.start()
 
-time.sleep(4)
+time.sleep(10)
 
-cur_book = order_book.get_current_book()
-book = np.array(cur_book).astype()
-print(book)
+while(True):
+
+    cur_book = order_book.get_current_book()
+
+    bids = np.array(cur_book['bids'])
+    bids = bids[:,0:2].astype(np.float)
+
+    asks = np.array(cur_book['asks'])
+    asks = asks[:,0:2].astype(np.float)
+
+    price = (bids[-1][0] + asks[0][0]) / 2
+    print(price)
+
+    b_x = bids[:,0]
+    b_y = bids[:,1]
+    b_i = np.where(b_x > (price - window))
+    b_x = b_x[b_i]
+    b_y = b_y[b_i]
+    bcum = np.cumsum(b_y[::-1])[::-1]
+
+    a_x = asks[:,0]
+    a_y = asks[:,1]
+    a_i = np.where(a_x < (price + window))
+    a_x = a_x[a_i]
+    a_y = a_y[a_i]
+    acum = np.cumsum(a_y)
+
+    plt.clf()
+    plt.plot(b_x, bcum, a_x, acum, ls='steps')
+    plt.pause(0.01)
 
 
 order_book.close()

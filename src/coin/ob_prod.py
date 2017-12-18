@@ -22,7 +22,7 @@ bcum = np.cumsum(b_y)
 
 a_x = asks[:,0]
 a_y = asks[:,1]
-acum = np.cumsum(b_y)
+acum = np.cumsum(a_y)
 
 
 plt.plot(b_x, bcum, a_x, acum, ls='steps')
