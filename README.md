@@ -7,7 +7,7 @@ sudo apt install python3-pip python3-tk
 pip3 install setuptools numpy matplotlib
 ```
 
-Install the GDAX API
+### GDAX API
 ```
 git clone https://github.com/danpaquin/gdax-python.git
 cd gdax
@@ -18,4 +18,12 @@ This step will likely be removed in later versions if the the pull request is me
 ```
 git pull origin pull/197/head
 python3 setup.py install
+```
+### Bittrex API
+```
+pip3 install python-bittrex
+```
+### Twitter Scraper
+```
+pip3 install twitterscraper
 ```
