@@ -50,6 +50,7 @@ while(True):
 
     plt.clf()
     plt.plot(b_x, bcum, a_x, acum, ls='steps')
+
     plt.pause(0.001)
 
 
